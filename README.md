@@ -34,6 +34,11 @@ Line is defined by two points. A user can either give both points when construct
 Circle is defined by a radius which is used in the equation r**2 = x**2 + y**2 which represents the circle. When someone calls `drawCircle()` the current (x, y)values become the circle center and we begin drawing the circle by giving an x value (which starts at r) solving for y, incrementing x, solving for y, and so on connecting each of the generated points with a line until a full circle is formed. Thus, we get a pretty good approximation of a circle. This can be seen in the video that is included with this submission.
 
 
+### Running the Code
+
+Running the code is as simply as uploading the Arduino sketch to the controller. Nothing else fancy is involved. Of course, the AccelStepper and MultiStepper libraries need to be installed for this to work, but that is the only caveat.
+
+
 ### Testing Results
 
 Testing results of the build were positive. I drew a series of cool lines, an impossible triangle, and a series of circles. 

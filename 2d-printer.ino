@@ -1,7 +1,7 @@
 #include <AccelStepper.h>
 #include <MultiStepper.h>
 #include "Wire.h"
-#include "math.h"
+#include "Math.h"
 
 #define X_STEP_PIN             37
 #define X_DIR_PIN              48
@@ -91,13 +91,13 @@ public:
     };
     steppers.moveTo(raised);
     steppers.runSpeedToPosition();
-    delay(500);
+//    delay(500);
 
     // Now go to position with pen lowered
     this->lowerPen();
     steppers.moveTo(this->toArray());
     steppers.runSpeedToPosition();
-    delay(500);
+//    delay(500);
   }
 
 private:
@@ -181,30 +181,81 @@ private:
   
 };
 
+class Circle {
+public:
+  // Constructor makes a circle centered about the origin
+  Circle(long r) : r_(r) {}
 
-/*
- * Draws an angle by controlling the stepper motors. The drawing
- * surface is abstracted to be a 2D cartesian plane where an angle
- * would look like this:
- * 
- *   y
- *   | p1 o
- *   |    |     
- *   | p2 o------o p3   
- *   |     
- *   +------------- x
- *   
- * This function DOES NOT calculate the angle, rather it just draws
- * the lines that make up the angle based on the input points
- */
-//void drawAngle(Point p1, Point p2, Point p3) {
-//  drawLine(p1, p2);
-//  drawLine(p2, p3);
-//}
+  void drawCircle() {
+    drawTopHalf();
+    drawBottomHalf();
+  }
+  
+private:
+  long r_; // Radius
 
-//void drawAngle(Point start, float theta, ) {
-//  
-//}
+  // Note: This function will always return a positive y-coordinate.
+  // It is the job of drawHalfCircle etc. to interpret this result 
+  // and make it negative where necessary
+  long getYCoord(long x) {
+    return sqrt(abs(sq(x) - sq(r_)));
+  }
+
+  void drawTopHalf() {
+    // Go to first point raised
+    Point firstPoint(r_, 0, 0);
+    firstPoint.moveToThisPointRaised();
+    
+    long x = r_ - 1;
+    while (-r_ <= x) {
+      Point p(x, getYCoord(x), 0);
+      p.moveToThisPointLowered();
+      x--;
+    }
+  }
+
+  void drawBottomHalf() {
+    long x = -r_;
+    while (x <= r_) {
+      Point p(x, -getYCoord(x), 0);
+      p.moveToThisPointLowered();
+      x++;
+    }
+  }
+};
+
+void drawImpossibleTriangle() {
+  // Shape Outline
+  Point origin(0, 0, 0);
+  Line lo1(origin, Point(-12, 22, 0));
+  Line lo2(*(lo1.getP2()), 168, 7*PI/20);
+  Line lo3(*(lo2.getP2()), -25, PI);
+  Line lo4(*(lo3.getP2()), -168, 13*PI/20);
+  Line lo5(*(lo4.getP2()), 25, - lo1.getTheta() - PI);
+  Line lo6(*(lo5.getP2()), 156, PI);
+  lo1.drawLine();
+  lo2.drawLine();
+  lo3.drawLine();
+  lo4.drawLine();
+  lo5.drawLine();
+  lo6.drawLine();
+  
+  // Shape Innards
+  Line li1(*(lo6.getP2()), 139, 7*PI/20);
+  Line li2(*(li1.getP2()), 88, 33*PI/20);
+  li1.drawLine();
+  li2.drawLine();
+  lo2.getP2()->moveToThisPointRaised();
+  Line li3(*(lo2.getP2()), 144, 33*PI/20);
+  Line li4(*(li3.getP2()), 83, PI);
+  li3.drawLine();
+  li4.drawLine();
+  lo4.getP2()->moveToThisPointRaised();
+  Line li5(*(lo4.getP2()), 131, PI);
+  Line li6(*(li5.getP2()), 88, 7*PI/20);
+  li5.drawLine();
+  li6.drawLine();
+}
 
 void setup() {  
 
@@ -236,31 +287,6 @@ void setup() {
   steppers.addStepper(stepper_x);
   steppers.addStepper(stepper_y);
   steppers.addStepper(stepper_z);
-
-  Serial.begin(9600);
-}
-
-Point createShape1(Point* start, float shift)  {
-  // 3.48 * 40 ~ 139
-  // 2.20 * 40 ~ 88
-  Line l1(*start, 139, 7*PI/20 + shift);
-  Line l2(*(l1.getP2()), 88, 33*PI/20 + shift);
-  l1.drawLine();
-  l2.drawLine();
-  return *(l2.getP2());
-}
-
-Point createShape2(Point* start, float shift) {
-  // 4.24 * 40 ~ 168
-  // 3.60 * 40 ~ 144
-  // 2.07 * 40 ~ 83
-  Line l1(*start, 168, 7*PI/20 + shift);
-  Line l2(*(l1.getP2()), 144, 33*PI/20 + shift);
-  Line l3(*(l2.getP2()), 83, PI + shift);
-  l1.drawLine();
-  l2.drawLine();
-  l3.drawLine();
-  return *(l3.getP2());
 }
 
 void loop() {
@@ -274,44 +300,15 @@ void loop() {
   // |      ~230            |
   // +----------------------+ 
 
-//  stepper_x.moveTo(10);
-//  while (stepper_x.currentPosition() != 10)
-//    stepper_x.run();
-//  stepper_y.moveTo(-10);
-//  while (stepper_y.currentPosition() != -10)
-//    stepper_y.run();
-//  stepper_z.moveTo(-100);
-//  while (stepper_z.currentPosition() != 10)
-//    stepper_z.run();
+  // Basic x, y, z movement to set the pen
+  stepper_x.moveTo(-10);
+  while (stepper_x.currentPosition() != -10)
+    stepper_x.run();
+  stepper_y.moveTo(-5);
+  while (stepper_y.currentPosition() != -5)
+    stepper_y.run();
+  stepper_z.moveTo(20);
+  while (stepper_z.currentPosition() != 20)
+    stepper_z.run();
 
-////////////// Shape Outline ///////////////////
-//  Point origin(0, 0, 0);
-//  Line lo1(origin, Point(-12, 22, 0));
-//  Line lo2(*(lo1.getP2()), 168, 7*PI/20);
-//  Line lo3(*(lo2.getP2()), -25, PI);
-//  Line lo4(*(lo3.getP2()), -168, 13*PI/20);
-//  Line lo5(*(lo4.getP2()), 25, - lo1.getTheta() - PI);
-//  Line lo6(*(lo5.getP2()), 156, PI);
-//  lo1.drawLine();
-//  lo2.drawLine();
-//  lo3.drawLine();
-//  lo4.drawLine();
-//  lo5.drawLine();
-//  lo6.drawLine();
-///////////// Shape Innards ///////////////////
-//  Line li1(*(lo6.getP2()), 139, 7*PI/20);
-//  Line li2(*(li1.getP2()), 88, 33*PI/20);
-//  li1.drawLine();
-//  li2.drawLine();
-//  lo2.getP2()->moveToThisPointRaised();
-//  Line li3(*(lo2.getP2()), 144, 33*PI/20);
-//  Line li4(*(li3.getP2()), 83, PI);
-//  li3.drawLine();
-//  li4.drawLine();
-//  lo4.getP2()->moveToThisPointRaised();
-//  Line li5(*(lo4.getP2()), 131, PI);
-//  Line li6(*(li5.getP2()), 88, 7*PI/20);
-//  li5.drawLine();
-//  li6.drawLine();
-  exit(0);
 }
