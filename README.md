@@ -19,7 +19,7 @@ The hardware provides three axis of motion (x, y, z) that allow a pen to draw on
 ##### Controlling the Stepper Motors
 
 To control the stepper motors, I mapped the motor leads to the corresponding pins on my controller by reading the spec sheet... there were a LOT of pins to map.
-From there, I used a library called AccelStepper and MultiStepper that tuned the current each motor needed and allowed me to run the motors in parallel to enable diagonal movement in addition to the standard linear motion in the {x,y,z}-axis directions.
+From there, I used a library called `AccelStepper` that tuned the current each motor needed and allowed me to run the motors in parallel to enable diagonal movement in addition to the standard linear motion in the {x,y,z}-axis directions.
 
 In essence, what the stepper motor code provides is an abstraction of the drawing surface as an x-y cartesian plane with movement in the z-direction for raising and lowering the pen.
 
@@ -36,7 +36,9 @@ Circle is defined by a radius which is used in the equation r**2 = x**2 + y**2 w
 
 ### Running the Code
 
-Running the code is as simply as uploading the Arduino sketch to the controller. Nothing else fancy is involved. Of course, the AccelStepper and MultiStepper libraries need to be installed for this to work, but that is the only caveat.
+Before running the code, ensure that you have access to the `AccelStepper` library from the `2d-printer.ino` file. This may require you to move the library to the libraries directory that contains all of your Arduino libraries.
+
+Once that is complete, you upload the sketch to the controller as you normally would.
 
 
 ### Testing Results
