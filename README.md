@@ -9,6 +9,28 @@ Please watch the following videos that show the printer in action drawing concen
 [![2D printer drawing concentric circles](img/circ-yt.png)](https://youtu.be/LLB9v7cW5J4)
 
 
+### CAD Model
+
+The following images were grabbed from the CAD model that I made of the printer before building starting. This reference helped my buy parts and visualize the build to minimize mistakes.
+
+![CAD model, image 1](img/cad1.png)
+![CAD model, image 2](img/cad2.png)
+![CAD model, image 3](img/cad3.png)
+![CAD model, image 4](img/cad4.png)
+![CAD model, image 5](img/cad5.png)
+
+
+### Build Images
+
+The following images are from the completed build.
+
+![Build, image 1](img/build1.png)
+![Build, image 2](img/build2.png)
+![Build, image 3](img/build3.png)
+![Build, image 4](img/build4.png)
+![Build, image 5](img/build5.png)
+
+
 ### Hardware Overview
 
 The printer is constructed with metal beams, acrylic (laser-cut) gantries, NEMA 17 stepper motors, 1 lead screw, 2 belts, 1 controller (essentially an Arduino Mega), and 1 24V power supply.
