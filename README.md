@@ -2,16 +2,20 @@
 
 ### Demo Movies
 
-Please check out the demo movies I included in this directory. They show the printer at work drawing circles and an impossible triangle. I also included a video of some of the laser cutting work I did because I think it is so darn cool.
+Please watch the following videos that show the printer in action drawing concentric circles and the impossible triangle!
+
+[![2D printer drawing the impossible triangle](img/tri-yt.png)](https://youtu.be/VmEdCu-YnbQ)
+
+[![2D printer drawing concentric circles](img/circ-yt.png)](https://youtu.be/LLB9v7cW5J4)
 
 
 ### Hardware Overview
 
-The printer is constructed with metal beams, acrylic (laser-cut) gantries, NEMA 17 stepper motors, 1 lead screw, 2 belts, 1 controller (essentially an Arduino Mega), and 1 24V power supply. The website for this project gives a more exact breakdown of parts and how the hardware all came together.
+The printer is constructed with metal beams, acrylic (laser-cut) gantries, NEMA 17 stepper motors, 1 lead screw, 2 belts, 1 controller (essentially an Arduino Mega), and 1 24V power supply.
 
 Constructing this printer was definitely the most challenging part of this project. Having to model things in CAD, make sure measurements were accurate down to the millimeter, choose the right parts, and so much more contributed to this not being an easy task; the planning and construction was definitely the most time consuming part.
 
-The hardware provides three axis of motion (x, y, z) that allow a pen to draw on a roughly 2x3inch acrylic platform. In the future, I plan on turning this acryllic platform into a heated bed and swapping out the pen for an extruder to make a 3-D printer out of the 2-D printer.
+The hardware provides three axes of motion (x, y, z) that allow a pen to draw on a roughly 2x3inch acrylic platform. In the future, I plan on turning this acryllic platform into a heated bed and swapping out the pen for an extruder to make a 3-D printer out of the 2-D printer.
 
 
 ### Code Overview
@@ -39,13 +43,3 @@ Circle is defined by a radius which is used in the equation r**2 = x**2 + y**2 w
 Before running the code, ensure that you have access to the `AccelStepper` library from the `2d-printer.ino` file. This may require you to move the library to the libraries directory that contains all of your Arduino libraries.
 
 Once that is complete, you upload the sketch to the controller as you normally would.
-
-
-### Testing Results
-
-Testing results of the build were positive. I drew a series of cool lines, an impossible triangle, and a series of circles. 
-
-
-### Bugs
-
-There are no known bugs in the software. There are no "bugs" in the hardware either, however, in the future I would like to dampen some of the vibration from the motors which can be reflected in the lines that are drawn.
